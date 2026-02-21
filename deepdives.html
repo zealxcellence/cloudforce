@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Deep Dives — Cloudforce</title>
+  <meta name="description" content="Long-form technical analysis for serious Salesforce practitioners." />
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,300;1,8..60,400&family=JetBrains+Mono:wght@400;500&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+
+  <header class="site-header" id="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="brand" aria-label="Cloudforce home">
+        <svg class="brand-logo" viewBox="0 0 44 32" fill="none" aria-hidden="true">
+          <circle cx="9"  cy="23" r="8"   fill="#00A1E0"/>
+          <circle cx="15" cy="17" r="9.5" fill="#00A1E0"/>
+          <circle cx="24" cy="15" r="11"  fill="#00A1E0"/>
+          <circle cx="33" cy="18" r="8.5" fill="#00A1E0"/>
+          <circle cx="38" cy="23" r="7"   fill="#00A1E0"/>
+          <polygon points="25,6 20,17 24.5,17 22,27 31,15 26,15" fill="#FE5000"/>
+        </svg>
+        <span class="brand-name">Cloudforce</span>
+      </a>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="site-nav" id="site-nav">
+        <ul class="nav-list">
+          <li class="nav-item has-dropdown">
+            <a href="#" class="nav-link">Topics <svg viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></a>
+            <ul class="dropdown">
+              <li><a href="tutorials.html">Salesforce Admin</a></li>
+              <li><a href="tutorials.html">Apex Development</a></li>
+              <li><a href="tutorials.html">Lightning Web Components</a></li>
+              <li><a href="tutorials.html">Salesforce Flow</a></li>
+              <li><a href="tutorials.html">Integration &amp; APIs</a></li>
+              <li><a href="tutorials.html">Certifications</a></li>
+            </ul>
+          </li>
+          <li class="nav-item"><a href="tutorials.html" class="nav-link">Tutorials</a></li>
+          <li class="nav-item"><a href="deepdives.html" class="nav-link active-page">Deep Dives</a></li>
+          <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
+        </ul>
+        <a href="tutorials.html" class="btn btn-primary nav-cta">Start Reading</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-hero">
+      <div class="container page-hero-inner">
+        <span class="page-hero-tag">Deep Dives</span>
+        <h1>Long-form technical analysis<br/>for serious practitioners</h1>
+        <p>Some questions need more than a quick answer. These articles go as deep as the topic demands — typically 3,000–6,000 words, covering architecture decisions, tradeoffs, and implementation detail that shorter formats can't.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="list-layout">
+          <div class="article-list">
+
+            <article class="list-card" style="border-left:4px solid var(--sf-blue);">
+              <div class="list-card-meta">
+                <a href="article.html" class="tag tag-deep">Deep Dive</a>
+                <a href="article.html" class="tag tag-arch">Architecture</a>
+                <time>Feb 5, 2026</time>
+                <span class="read-time">22 min read</span>
+              </div>
+              <h2 class="list-card-title">
+                <a href="article.html">Designing a Robust Event-Driven Architecture with Platform Events and CDC</a>
+              </h2>
+              <p class="list-card-excerpt">Platform Events and Change Data Capture together form a messaging backbone for Salesforce. Used well they decouple systems elegantly. Used carelessly they create invisible debt. This article covers the full design — subscriber patterns, replay IDs, error handling, and when not to use them.</p>
+              <div class="list-card-footer">
+                <div class="author">
+                  <div class="author-avatar" style="width:28px;height:28px;font-size:0.8rem">N</div>
+                  <span class="author-name">Nilesh Dethe</span>
+                </div>
+                <a href="article.html" class="card-link">Read article →</a>
+              </div>
+            </article>
+
+            <article class="list-card" style="border-left:4px solid var(--sf-blue);">
+              <div class="list-card-meta">
+                <a href="article.html" class="tag tag-deep">Deep Dive</a>
+                <a href="article.html" class="tag tag-apex">Apex</a>
+                <time>Jan 20, 2026</time>
+                <span class="read-time">28 min read</span>
+              </div>
+              <h2 class="list-card-title">
+                <a href="article.html">The Definitive Guide to Apex Testing: From 75% Coverage to Genuinely Useful Test Suites</a>
+              </h2>
+              <p class="list-card-excerpt">75% coverage is a floor, not a goal. This guide covers everything from test data isolation and mock frameworks to assertion strategies and CI pipeline integration — so your tests actually catch regressions.</p>
+              <div class="list-card-footer">
+                <div class="author">
+                  <div class="author-avatar" style="width:28px;height:28px;font-size:0.8rem">N</div>
+                  <span class="author-name">Nilesh Dethe</span>
+                </div>
+                <a href="article.html" class="card-link">Read article →</a>
+              </div>
+            </article>
+
+            <article class="list-card" style="border-left:4px solid var(--sf-blue);">
+              <div class="list-card-meta">
+                <a href="article.html" class="tag tag-deep">Deep Dive</a>
+                <a href="article.html" class="tag tag-arch">Architecture</a>
+                <time>Jan 8, 2026</time>
+                <span class="read-time">19 min read</span>
+              </div>
+              <h2 class="list-card-title">
+                <a href="article.html">Multi-Org Strategy: Deciding If Your Company Needs One Salesforce Org or Many</a>
+              </h2>
+              <p class="list-card-excerpt">The multi-org vs single-org debate has no universal answer — but there are clear signals that point one way or the other. This article maps those signals to real business scenarios and explains the long-term operational cost of each choice.</p>
+              <div class="list-card-footer">
+                <div class="author">
+                  <div class="author-avatar" style="width:28px;height:28px;font-size:0.8rem">N</div>
+                  <span class="author-name">Nilesh Dethe</span>
+                </div>
+                <a href="article.html" class="card-link">Read article →</a>
+              </div>
+            </article>
+
+            <article class="list-card" style="border-left:4px solid var(--sf-blue);">
+              <div class="list-card-meta">
+                <a href="article.html" class="tag tag-deep">Deep Dive</a>
+                <a href="article.html" class="tag tag-admin">Admin</a>
+                <time>Dec 15, 2025</time>
+                <span class="read-time">24 min read</span>
+              </div>
+              <h2 class="list-card-title">
+                <a href="article.html">Salesforce Data Architecture at Scale: Managing Millions of Records Without Burning Your Org</a>
+              </h2>
+              <p class="list-card-excerpt">What happens when your Salesforce org grows to 50 million records? Data skew, reporting performance, archiving strategy and data model decisions all interact in ways that only become visible at scale. This is the guide you need before you get there.</p>
+              <div class="list-card-footer">
+                <div class="author">
+                  <div class="author-avatar" style="width:28px;height:28px;font-size:0.8rem">N</div>
+                  <span class="author-name">Nilesh Dethe</span>
+                </div>
+                <a href="article.html" class="card-link">Read article →</a>
+              </div>
+            </article>
+
+            <div style="background:var(--bg-card);border:1px dashed var(--border);border-radius:var(--radius-md);padding:2rem;text-align:center;color:var(--text-muted);">
+              <p style="font-family:'DM Sans',sans-serif;font-size:0.9rem;margin:0;">
+                New deep dives publish monthly. <a href="index.html#newsletter" style="color:var(--sf-blue)">Subscribe to be notified →</a>
+              </p>
+            </div>
+
+          </div>
+
+          <aside class="list-sidebar">
+            <div class="sidebar-widget">
+              <h4>What's a Deep Dive?</h4>
+              <p style="font-size:0.85rem;color:var(--text-muted);line-height:1.7;margin:0;">
+                Deep Dives are long-form, research-backed articles that explore a single Salesforce topic exhaustively — covering design decisions, tradeoffs, edge cases and real-world implementation.
+              </p>
+            </div>
+            <div class="sidebar-widget">
+              <h4>By Topic</h4>
+              <ul class="widget-list">
+                <li><a href="deepdives.html">Architecture <span class="count">4</span></a></li>
+                <li><a href="deepdives.html">Apex <span class="count">2</span></a></li>
+                <li><a href="deepdives.html">Admin &amp; Data <span class="count">1</span></a></li>
+              </ul>
+            </div>
+            <div class="sidebar-widget">
+              <h4>Shorter reads?</h4>
+              <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:0.75rem;">Prefer a 10-minute tutorial instead?</p>
+              <a href="tutorials.html" class="btn btn-ghost" style="font-size:0.82rem;width:100%;justify-content:center;">Browse Tutorials</a>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <a href="index.html" class="brand">
+          <svg class="brand-logo" viewBox="0 0 44 32" fill="none" aria-hidden="true">
+            <circle cx="9"  cy="23" r="8"   fill="#00A1E0"/>
+            <circle cx="15" cy="17" r="9.5" fill="#00A1E0"/>
+            <circle cx="24" cy="15" r="11"  fill="#00A1E0"/>
+            <circle cx="33" cy="18" r="8.5" fill="#00A1E0"/>
+            <circle cx="38" cy="23" r="7"   fill="#00A1E0"/>
+            <polygon points="25,6 20,17 24.5,17 22,27 31,15 26,15" fill="#FE5000"/>
+          </svg>
+          <span class="brand-name">Cloudforce</span>
+        </a>
+        <p class="footer-tagline">Professional learning for Admins,<br/>Developers &amp; Architects.</p>
+      </div>
+      <nav class="footer-nav">
+        <div class="footer-col">
+          <h4>Topics</h4>
+          <ul>
+            <li><a href="tutorials.html">Apex Development</a></li>
+            <li><a href="tutorials.html">LWC &amp; UI</a></li>
+            <li><a href="tutorials.html">Salesforce Admin</a></li>
+            <li><a href="tutorials.html">Flow &amp; Automation</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Series</h4>
+          <ul>
+            <li><a href="tutorials.html">Tutorials</a></li>
+            <li><a href="deepdives.html">Deep Dives</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Site</h4>
+          <ul>
+            <li><a href="about.html">About</a></li>
+            <li><a href="about.html#contact">Contact</a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+    <div class="footer-bottom">
+      <div class="container">
+        <span>&copy; 2026 Cloudforce. All rights reserved.</span>
+        <span>Built with care for the Salesforce community.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/main.js"></script>
+</body>
+</html>

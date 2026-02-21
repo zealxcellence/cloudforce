@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bulkification Patterns That Actually Scale — Cloudforce</title>
+  <meta name="description" content="Real-world Apex bulkification patterns — collections over loops, selector layers, unit-of-work — with practical examples." />
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,300;1,8..60,400&family=JetBrains+Mono:wght@400;500&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+
+  <header class="site-header" id="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="brand" aria-label="Cloudforce home">
+        <svg class="brand-logo" viewBox="0 0 44 32" fill="none" aria-hidden="true">
+          <circle cx="9"  cy="23" r="8"   fill="#00A1E0"/>
+          <circle cx="15" cy="17" r="9.5" fill="#00A1E0"/>
+          <circle cx="24" cy="15" r="11"  fill="#00A1E0"/>
+          <circle cx="33" cy="18" r="8.5" fill="#00A1E0"/>
+          <circle cx="38" cy="23" r="7"   fill="#00A1E0"/>
+          <polygon points="25,6 20,17 24.5,17 22,27 31,15 26,15" fill="#FE5000"/>
+        </svg>
+        <span class="brand-name">Cloudforce</span>
+      </a>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="site-nav" id="site-nav">
+        <ul class="nav-list">
+          <li class="nav-item has-dropdown">
+            <a href="#" class="nav-link">Topics <svg viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></a>
+            <ul class="dropdown">
+              <li><a href="tutorials.html">Salesforce Admin</a></li>
+              <li><a href="tutorials.html">Apex Development</a></li>
+              <li><a href="tutorials.html">Lightning Web Components</a></li>
+              <li><a href="tutorials.html">Salesforce Flow</a></li>
+              <li><a href="tutorials.html">Integration &amp; APIs</a></li>
+              <li><a href="tutorials.html">Certifications</a></li>
+            </ul>
+          </li>
+          <li class="nav-item"><a href="tutorials.html" class="nav-link">Tutorials</a></li>
+          <li class="nav-item"><a href="deepdives.html" class="nav-link">Deep Dives</a></li>
+          <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
+        </ul>
+        <a href="tutorials.html" class="btn btn-primary nav-cta">Start Reading</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="section" style="padding-bottom:0">
+      <div class="container">
+        <div class="article-layout">
+
+          <!-- Article body -->
+          <article>
+            <header class="article-header">
+              <div class="article-header-meta">
+                <a href="tutorials.html" class="tag tag-apex">Apex</a>
+                <time datetime="2026-02-15" style="font-family:'DM Sans',sans-serif;font-size:0.85rem;color:var(--text-muted)">February 15, 2026</time>
+                <span class="read-time">12 min read</span>
+              </div>
+              <h1 class="article-title">
+                Bulkification Patterns That Actually Scale: A Field Guide for Apex Developers
+              </h1>
+              <p class="article-subtitle">
+                Governor limits exist to protect shared resources — but they're also your most honest feedback loop. Here's how to work with them, not around them.
+              </p>
+              <div class="article-byline">
+                <div class="author-avatar">N</div>
+                <div class="byline-right">
+                  <strong style="font-family:'DM Sans',sans-serif;font-size:0.9rem;color:var(--text-primary)">Nilesh Dethe</strong>
+                  <span>Salesforce Architect · Cloudforce</span>
+                </div>
+              </div>
+            </header>
+
+            <div class="article-body">
+
+              <p>
+                Every Apex developer learns about governor limits eventually. Most learn about them the hard way —
+                a trigger that works perfectly in a developer org, deployed to production, then promptly fails
+                when someone runs a data load. The frustrating thing is that the fix is almost always the same:
+                you needed to bulkify.
+              </p>
+
+              <p>
+                This guide isn't about memorising the limits table. It's about the small number of patterns
+                that, once internalised, make bulkification feel natural rather than retrofitted.
+              </p>
+
+              <h2 id="why-bulk">Why Bulkification Matters Beyond 200 Records</h2>
+
+              <p>
+                The canonical explanation focuses on batch triggers: if you process 200 records in a batch,
+                a SOQL query inside a loop will hit the 100-query limit almost immediately. True, but it
+                misses the bigger picture.
+              </p>
+
+              <p>
+                Bulkified code is also <em>faster code</em>. A single SOQL query that returns 1,000 records
+                is orders of magnitude cheaper — in time, CPU, and heap — than 1,000 queries returning one
+                record each. Bulkification isn't about staying inside limits; it's about writing code that
+                respects the underlying platform architecture.
+              </p>
+
+              <div class="callout">
+                <strong>Key principle</strong>
+                <p>Treat every trigger context as if it could receive 200 records. If your code works correctly
+                and efficiently for 200 records, it will work for 1 or 2,000.</p>
+              </div>
+
+              <h2 id="pattern-1">Pattern 1: Collect IDs First, Query Once</h2>
+
+              <p>
+                The most common anti-pattern is querying inside a loop. The fix is almost mechanical:
+                collect all the IDs you need, then query once outside the loop.
+              </p>
+
+              <p><strong>Before (broken):</strong></p>
+              <pre><code>// ❌ SOQL query inside a loop — will fail with more than 100 records
+for (Opportunity opp : Trigger.new) {
+    Account acc = [SELECT Id, Name, Industry
+                   FROM Account
+                   WHERE Id = :opp.AccountId];
+    // do something with acc
+}</code></pre>
+
+              <p><strong>After (correct):</strong></p>
+              <pre><code>// ✅ Collect → Query once → Map → Use
+Set&lt;Id&gt; accountIds = new Set&lt;Id&gt;();
+for (Opportunity opp : Trigger.new) {
+    if (opp.AccountId != null) {
+        accountIds.add(opp.AccountId);
+    }
+}
+
+Map&lt;Id, Account&gt; accountMap = new Map&lt;Id, Account&gt;(
+    [SELECT Id, Name, Industry FROM Account WHERE Id IN :accountIds]
+);
+
+for (Opportunity opp : Trigger.new) {
+    Account acc = accountMap.get(opp.AccountId);
+    if (acc != null) {
+        // process safely
+    }
+}</code></pre>
+
+              <h2 id="pattern-2">Pattern 2: The Selector Layer</h2>
+
+              <p>
+                Once your triggers and service classes start sharing queries, you'll want a centralised
+                place to define what gets queried and how. That's the selector pattern.
+              </p>
+
+              <p>
+                A selector class owns all queries for a given SObject. It always queries in bulk (taking
+                a <code>Set&lt;Id&gt;</code>), always returns a <code>Map&lt;Id, SObject&gt;</code>,
+                and its field lists are easy to audit in one place.
+              </p>
+
+              <pre><code>public with sharing class AccountSelector {
+
+    public Map&lt;Id, Account&gt; selectByIds(Set&lt;Id&gt; ids) {
+        return new Map&lt;Id, Account&gt;([
+            SELECT Id, Name, Industry, BillingCountry, OwnerId
+            FROM Account
+            WHERE Id IN :ids
+        ]);
+    }
+
+    public Map&lt;Id, Account&gt; selectByOpportunityIds(Set&lt;Id&gt; oppIds) {
+        Map&lt;Id, Account&gt; result = new Map&lt;Id, Account&gt;();
+        for (Opportunity opp : [
+            SELECT AccountId, Account.Id, Account.Name, Account.Industry
+            FROM Opportunity
+            WHERE Id IN :oppIds
+        ]) {
+            result.put(opp.AccountId, opp.Account);
+        }
+        return result;
+    }
+}</code></pre>
+
+              <h2 id="pattern-3">Pattern 3: Unit of Work — One DML to Rule Them All</h2>
+
+              <p>
+                The Unit of Work pattern collects all the records that need to be inserted, updated,
+                or deleted across a transaction, then performs all DML at the end — once per operation type.
+                This keeps DML statements well within limits regardless of how complex the business logic is.
+              </p>
+
+              <pre><code>public class OpportunityService {
+
+    public void processOpportunities(List&lt;Opportunity&gt; opps) {
+        List&lt;Task&gt; tasksToInsert = new List&lt;Task&gt;();
+        List&lt;Opportunity&gt; oppsToUpdate = new List&lt;Opportunity&gt;();
+
+        for (Opportunity opp : opps) {
+            if (opp.StageName == 'Closed Won') {
+                // Build task record — don't insert yet
+                tasksToInsert.add(new Task(
+                    WhatId = opp.Id,
+                    Subject = 'Send welcome pack',
+                    ActivityDate = Date.today().addDays(3)
+                ));
+                // Mark opportunity — don't update yet
+                oppsToUpdate.add(new Opportunity(
+                    Id = opp.Id,
+                    Description = 'Welcome pack scheduled'
+                ));
+            }
+        }
+
+        // Single DML per operation — safe for any batch size
+        if (!tasksToInsert.isEmpty())  insert tasksToInsert;
+        if (!oppsToUpdate.isEmpty())   update oppsToUpdate;
+    }
+}</code></pre>
+
+              <h2 id="measuring">Measuring Before You Optimise</h2>
+
+              <p>
+                The single most important piece of advice in this entire article: use
+                <code>Limits.getQueries()</code> and <code>Limits.getCpuTime()</code> to instrument
+                your code before and after optimising. Guessing where limits are being consumed wastes
+                time. Measuring takes five minutes and tells you exactly where to focus.
+              </p>
+
+              <pre><code>System.debug('SOQL queries so far: ' + Limits.getQueries());
+System.debug('CPU time (ms): ' + Limits.getCpuTime());
+System.debug('Heap size (bytes): ' + Limits.getHeapSize());</code></pre>
+
+              <p>
+                Add these before and after suspicious sections in anonymous Apex, then run your scenario.
+                The difference tells you exactly what that code costs.
+              </p>
+
+              <h2 id="conclusion">Putting It Together</h2>
+
+              <p>
+                Bulkification isn't a checklist — it's a way of thinking about data flow.
+                The three patterns above (collect → query once → map, selectors, unit of work)
+                handle the vast majority of real-world scenarios. Apply them consistently
+                from the start and retrofitting becomes rare.
+              </p>
+
+              <p>
+                In the next article we'll look at how these patterns extend to asynchronous contexts —
+                queueable jobs, batch Apex, and where the bulkification rules subtly change.
+              </p>
+
+            </div>
+
+            <!-- Article footer -->
+            <div style="border-top:1px solid var(--border);margin-top:3rem;padding-top:2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;">
+              <div class="author">
+                <div class="author-avatar">N</div>
+                <div class="author-info">
+                  <span class="author-name">Nilesh Dethe</span>
+                  <span class="author-role">Salesforce Architect</span>
+                </div>
+              </div>
+              <a href="tutorials.html" class="btn btn-ghost">← Back to Tutorials</a>
+            </div>
+
+          </article>
+
+          <!-- Sticky sidebar -->
+          <aside class="article-sidebar">
+            <div class="sidebar-widget toc-widget">
+              <h4>In this article</h4>
+              <ul class="toc-list">
+                <li><a href="#why-bulk">Why Bulkification Matters</a></li>
+                <li><a href="#pattern-1">Pattern 1: Collect → Query Once</a></li>
+                <li><a href="#pattern-2">Pattern 2: Selector Layer</a></li>
+                <li><a href="#pattern-3">Pattern 3: Unit of Work</a></li>
+                <li><a href="#measuring">Measuring First</a></li>
+                <li><a href="#conclusion">Putting It Together</a></li>
+              </ul>
+            </div>
+
+            <div class="sidebar-widget" style="margin-top:1rem;">
+              <h4>Related</h4>
+              <ul class="widget-list">
+                <li><a href="tutorials.html">Writing Testable Apex</a></li>
+                <li><a href="tutorials.html">Wire vs Imperative in LWC</a></li>
+                <li><a href="deepdives.html">Apex Testing Deep Dive</a></li>
+              </ul>
+            </div>
+          </aside>
+
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <a href="index.html" class="brand">
+          <svg class="brand-logo" viewBox="0 0 44 32" fill="none" aria-hidden="true">
+            <circle cx="9"  cy="23" r="8"   fill="#00A1E0"/>
+            <circle cx="15" cy="17" r="9.5" fill="#00A1E0"/>
+            <circle cx="24" cy="15" r="11"  fill="#00A1E0"/>
+            <circle cx="33" cy="18" r="8.5" fill="#00A1E0"/>
+            <circle cx="38" cy="23" r="7"   fill="#00A1E0"/>
+            <polygon points="25,6 20,17 24.5,17 22,27 31,15 26,15" fill="#FE5000"/>
+          </svg>
+          <span class="brand-name">Cloudforce</span>
+        </a>
+        <p class="footer-tagline">Professional learning for Admins,<br/>Developers &amp; Architects.</p>
+      </div>
+      <nav class="footer-nav">
+        <div class="footer-col">
+          <h4>Topics</h4>
+          <ul>
+            <li><a href="tutorials.html">Apex Development</a></li>
+            <li><a href="tutorials.html">LWC &amp; UI</a></li>
+            <li><a href="tutorials.html">Salesforce Admin</a></li>
+            <li><a href="tutorials.html">Flow &amp; Automation</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Series</h4>
+          <ul>
+            <li><a href="tutorials.html">Tutorials</a></li>
+            <li><a href="deepdives.html">Deep Dives</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Site</h4>
+          <ul>
+            <li><a href="about.html">About</a></li>
+            <li><a href="about.html#contact">Contact</a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+    <div class="footer-bottom">
+      <div class="container">
+        <span>&copy; 2026 Cloudforce. All rights reserved.</span>
+        <span>Built with care for the Salesforce community.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/main.js"></script>
+</body>
+</html>

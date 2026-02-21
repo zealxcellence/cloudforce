@@ -1,8 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 220" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 240" role="img" aria-labelledby="title desc">
   <title id="title">Cloudforce Logo</title>
   <desc id="desc">Cloudforce wordmark with lightning bolt between Cloud and force.</desc>
-  <rect width="1120" height="220" fill="none"/>
-  <text x="0" y="164" fill="#F5F7FA" font-family="Georgia, 'Times New Roman', serif" font-size="188" font-weight="700">Cloud</text>
-  <polygon points="470,8 398,116 452,116 386,214 562,100 505,100" fill="#FF9800"/>
-  <text x="560" y="164" fill="#0099E6" font-family="Georgia, 'Times New Roman', serif" font-size="188" font-weight="700">force</text>
+  <rect width="1180" height="240" fill="none"/>
+  <text x="8" y="174" fill="#F5F7FA" font-family="Georgia, 'Times New Roman', serif" font-size="188" font-weight="700">Cloud</text>
+  <polygon points="592,8 520,112 574,112 506,228 688,94 628,94" fill="#FF9800"/>
+  <text x="700" y="174" fill="#00A9F4" font-family="Georgia, 'Times New Roman', serif" font-size="188" font-weight="700">force</text>
 </svg>

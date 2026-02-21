@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">Cloudforce Favicon</title>
+  <desc id="desc">Stylized C and f letters separated by an orange lightning bolt.</desc>
+  <rect width="512" height="512" fill="none"/>
+  <text x="110" y="350" fill="#F5F7FA" font-family="Georgia, 'Times New Roman', serif" font-size="290" font-weight="700">C</text>
+  <polygon points="278,108 208,258 255,258 198,404 350,230 296,230" fill="#FF9800"/>
+  <text x="305" y="350" fill="#0B5CA8" font-family="Georgia, 'Times New Roman', serif" font-size="290" font-weight="700">f</text>
+</svg>

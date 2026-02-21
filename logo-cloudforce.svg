@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 300" role="img" aria-labelledby="title desc">
+  <title id="title">Cloudforce Logo</title>
+  <desc id="desc">Cloudforce wordmark with lightning bolt between Cloud and force.</desc>
+  <rect width="1200" height="300" fill="none"/>
+  <g transform="translate(70,50)">
+    <text x="0" y="165" fill="#F5F7FA" font-family="Georgia, 'Times New Roman', serif" font-size="190" font-weight="700">Cloud</text>
+    <polygon points="470,35 390,170 445,170 380,250 560,110 500,110" fill="#FF9800"/>
+    <text x="555" y="165" fill="#0099E6" font-family="Georgia, 'Times New Roman', serif" font-size="190" font-weight="700">force</text>
+  </g>
+</svg>

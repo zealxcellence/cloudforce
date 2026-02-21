@@ -1,0 +1,577 @@
+/*
+ * Cloudforce v6 — Eye-comfort & Polish Edition
+ *
+ * KEY FIXES IN THIS VERSION:
+ * 1. Banner: use background-color + background-image separately (not shorthand)
+ *    so background-image:none override doesn't kill the gradient
+ * 2. Nav active/hover on Topics → orange highlight
+ * 3. Dropdown gap fixed: margin-top:0, arrow hidden
+ * 4. Images: fixed-height containers + object-fit:cover — no stretch
+ * 5. Eye comfort: warm soft palette, generous line-height, no pure white BG
+ *
+ * Salesforce palette: Navy #032D60 | Blue #0070D2 | Cyan #00A1E0 | Orange #E8650A
+ */
+
+/* ─── VARIABLES ─────────────────────────────────────────── */
+:root {
+  --navy:      #032D60;
+  --navy-deep: #01183A;
+  --blue:      #0070D2;
+  --cyan:      #00A1E0;
+  --orange:    #E8650A;
+  /* Eye-comfort backgrounds — warm, slightly off-white / soft blue-grey */
+  --bg:        #EDF2F7;   /* page bg — soft cool grey, not harsh white     */
+  --bg-card:   #F7FAFD;   /* card bg — almost white but with blue warmth   */
+  --bg-input:  #F0F5FA;
+  /* Typography — not pure black, reduces contrast harshness */
+  --text:      #2D3E52;   /* deep blue-grey for body copy                  */
+  --text-muted:#5C7A95;   /* secondary / meta                              */
+  --border:    #C8D8EB;
+  --shadow-sm: 0 2px 12px rgba(3,45,96,0.08);
+  --shadow-md: 0 6px 28px rgba(3,45,96,0.13);
+  --shadow-lg: 0 14px 50px rgba(3,45,96,0.20);
+  --radius:    10px;
+  --ease:      .20s ease;
+}
+
+/* ─── GLOBAL ─────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  background: var(--bg) !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+body, input, textarea, select { color: var(--text); }
+p { line-height: 1.85; color: var(--text); }
+h1,h2,h3,h4,h5,h6 { color: var(--navy); }
+a { color: var(--blue); transition: color var(--ease); }
+a:hover { color: var(--cyan); text-decoration: none; }
+hr  { border-top-color: var(--border); }
+blockquote { border-left-color: var(--cyan); }
+strong, b { color: var(--navy); }
+
+/* ─── #MAIN ──────────────────────────────────────────────── */
+#main {
+  background: var(--bg) !important;
+  border-top:    5px solid var(--cyan) !important;
+  border-bottom: 4px solid var(--blue) !important;
+  border-top-width:    5px !important;
+  border-bottom-width: 4px !important;
+}
+
+/* ─── HEADER ─────────────────────────────────────────────── */
+#header {
+  background-color: #01183A !important;
+  background-image: linear-gradient(145deg,
+    #010F28 0%,
+    #01183A 28%,
+    #032D60 62%,
+    #044B9A 100%) !important;
+  padding: 3em 0 2.5em !important;
+  position: relative;
+  overflow: hidden;
+}
+#header::before {
+  content: '';
+  position: absolute;
+  top: -80px; right: -60px;
+  width: 380px; height: 380px;
+  background: radial-gradient(circle, rgba(0,161,224,0.13) 0%, transparent 68%);
+  pointer-events: none;
+}
+#header::after {
+  content: '';
+  position: absolute;
+  bottom: -50px; left: 6%;
+  width: 240px; height: 240px;
+  background: radial-gradient(circle, rgba(0,112,210,0.10) 0%, transparent 70%);
+  pointer-events: none;
+}
+#header .logo { border-top: 1px solid rgba(255,255,255,0.14) !important; }
+#header .logo div { background: transparent !important; padding: 0 1.5em !important; }
+
+/* ── Logo ── */
+#header .logo h1 {
+  display: inline-flex !important;
+  align-items: center;
+  font-size: 0 !important;
+  line-height: 1;
+  margin: 0;
+}
+#header .logo h1 a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55em;
+  text-decoration: none !important;
+  position: relative;
+  z-index: 2;
+}
+#header .logo h1 a::before {
+  content: '';
+  display: inline-block;
+  width: 66px; height: 52px;
+  background: url('../img/logo-white.svg') no-repeat center center;
+  background-size: contain;
+  flex-shrink: 0;
+}
+#header .logo h1 a::after {
+  content: 'CLOUDFORCE';
+  display: inline-block;
+  font-family: 'Open Sans Condensed', sans-serif;
+  font-size: 2.1rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.14em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+#header .logo p {
+  display: block !important;
+  color: rgba(190,220,255,0.78) !important;
+  font-size: 0.57em !important;
+  letter-spacing: 0.22em !important;
+  text-transform: uppercase;
+  margin-top: 0.68em !important;
+  font-weight: 400;
+  opacity: 1 !important;
+  position: relative;
+  z-index: 2;
+}
+
+/* ─── NAV ────────────────────────────────────────────────── */
+#nav {
+  background-color: #01183A !important;
+  background-image: none !important;
+  border-bottom: 2px solid var(--cyan) !important;
+  box-shadow: 0 3px 20px rgba(0,0,0,0.42);
+}
+#nav li a,
+#nav li span {
+  color: rgba(255,255,255,0.68) !important;
+  font-weight: 700;
+  font-size: 0.76em;
+  letter-spacing: 0.10em;
+  border-radius: 5px 5px 0 0;
+  transition: background var(--ease), color var(--ease) !important;
+  text-decoration: none !important;
+}
+/* Hover — soft cyan tint */
+#nav li:hover > a,
+#nav li:hover > span {
+  background: rgba(0,161,224,0.18) !important;
+  color: #fff !important;
+}
+/* When dropdown is open — li gets .active class → orange highlight */
+#nav li.active > a,
+#nav li.active > span {
+  background: var(--orange) !important;
+  color: #fff !important;
+}
+/* Current page always orange */
+#nav li.current > a,
+#nav li.current > span {
+  background: var(--orange) !important;
+  color: #fff !important;
+  border-radius: 5px 5px 0 0;
+}
+
+/* ── Dropdown — Fix the gap & broken look ── */
+/* ROOT CAUSE: .dropotron.level-0 has margin-top:1em in main.css
+   and a ::before arrow. We zero the margin and hide the arrow. */
+.dropotron {
+  background-color: #01183A !important;
+  border: 1px solid rgba(0,161,224,0.25) !important;
+  border-top: 2px solid var(--cyan) !important;
+  border-radius: 0 0 8px 8px !important;
+  box-shadow: 0 18px 54px rgba(0,0,0,0.55) !important;
+  overflow: hidden;
+  min-width: 16em !important;
+  padding: 0 !important;
+}
+/* Kill the 1em top gap */
+.dropotron.level-0 {
+  margin-top: 0 !important;
+}
+/* Hide the decorative caret arrow (it floats above creating the visible gap) */
+.dropotron.level-0::before {
+  display: none !important;
+}
+.dropotron li > a,
+.dropotron li > span {
+  display: block;
+  color: rgba(195,225,255,0.80) !important;
+  border-top: 1px solid rgba(255,255,255,0.06) !important;
+  font-family: 'Open Sans Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 0.84em;
+  letter-spacing: 0.09em;
+  padding: 0.80em 1.5em !important;
+  line-height: 1.5 !important;
+  transition: background var(--ease), color var(--ease);
+}
+.dropotron li:first-child > a,
+.dropotron li:first-child > span { border-top: none !important; }
+.dropotron li:hover > a,
+.dropotron li.active > a {
+  background: rgba(0,161,224,0.18) !important;
+  color: #fff !important;
+}
+
+/* ─── BANNER ─────────────────────────────────────────────── */
+/*
+ * CRITICAL: Use background-color + background-image SEPARATELY, not shorthand.
+ * If we use "background: gradient !important;" and then "background-image: none"
+ * that wipes out the gradient. We set background-image directly to the gradient.
+ */
+#banner {
+  background-color: #01183A !important;
+  background-image: linear-gradient(158deg,
+    #010F28 0%,
+    #01183A 28%,
+    #032D60 58%,
+    #044B9A 82%,
+    #0070D2 100%) !important;
+  position: relative;
+  overflow: hidden;
+  min-height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+/* Dot-grid texture — applies on top via pseudo */
+#banner::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: radial-gradient(rgba(255,255,255,0.040) 1px, transparent 1px);
+  background-size: 32px 32px;
+  pointer-events: none;
+  z-index: 1;
+}
+/* Atmospheric glow orb */
+#banner::after {
+  content: '';
+  position: absolute;
+  right: 7%; top: 50%;
+  transform: translateY(-50%);
+  width: 380px; height: 380px;
+  background: radial-gradient(circle, rgba(0,161,224,0.15) 0%, transparent 65%);
+  pointer-events: none;
+  z-index: 1;
+}
+/* Override main.css dark box on .content */
+#banner .content {
+  background-color: transparent !important;
+  background-image: none !important;
+  position: relative;
+  z-index: 3;
+  text-align: center;
+  padding: 3em 2em;
+  max-width: 640px;
+}
+#banner .content h2 {
+  color: #fff !important;
+  font-size: 2.5em !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.04em;
+  text-shadow: 0 2px 20px rgba(0,0,0,0.38);
+  margin-bottom: 0.4em;
+}
+#banner .content p {
+  color: rgba(195,228,255,0.86) !important;
+  font-size: 1.05em;
+  line-height: 1.80;
+  margin: 0 auto 2em;
+  font-style: italic;
+}
+#banner .content .button,
+#banner .button {
+  display: inline-block;
+  background-color: var(--orange) !important;
+  background-image: none !important;
+  border: none !important;
+  color: #fff !important;
+  border-radius: 6px !important;
+  padding: 0.85em 2.6em !important;
+  font-weight: 700 !important;
+  font-size: 0.9em !important;
+  letter-spacing: 0.12em !important;
+  box-shadow: 0 4px 22px rgba(232,101,10,0.42);
+  transition: background var(--ease), transform var(--ease), box-shadow var(--ease) !important;
+}
+#banner .content .button:hover {
+  background-color: #c85208 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(232,101,10,0.55);
+}
+
+/* ─── BUTTONS ────────────────────────────────────────────── */
+.button {
+  background-color: var(--blue) !important;
+  background-image: none !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 5px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
+  transition: background var(--ease), transform var(--ease) !important;
+}
+.button:hover {
+  background-color: #005AAC !important;
+  color: #fff !important;
+  transform: translateY(-1px);
+}
+.button.alt {
+  background-color: transparent !important;
+  background-image: none !important;
+  border: 2px solid var(--blue) !important;
+  color: var(--blue) !important;
+}
+.button.alt:hover {
+  background-color: var(--blue) !important;
+  color: #fff !important;
+}
+
+/* ─── h2.major dividers ──────────────────────────────────── */
+h2.major { border-top-color: var(--cyan) !important; }
+h2.major span { background: var(--bg) !important; color: var(--navy) !important; }
+.box h2.major span,
+.box.features h2.major span,
+.box.blog h2.major span { background: var(--bg-card) !important; }
+.sidebar h2.major span  { background: var(--bg-card) !important; }
+
+/* ─── HIGHLIGHT BOX + ICON CIRCLES ──────────────────────── */
+.box.highlight {
+  background: var(--bg-card);
+  border-top: 4px solid var(--cyan) !important;
+  border-radius: 0 0 var(--radius) var(--radius);
+  box-shadow: var(--shadow-sm);
+  padding: 2.8em 2em;
+}
+.box.highlight h2 { color: var(--navy) !important; }
+.box.highlight header > p { color: var(--text-muted) !important; }
+.box.highlight > p { color: var(--text); max-width: 680px; margin: 0 auto; }
+
+/* FIX: Override main.css grey (#c1cac5) icon circles */
+ul.special li a::before {
+  background-color: var(--blue) !important;
+  background-image: linear-gradient(145deg, var(--blue), var(--cyan)) !important;
+  box-shadow: 0 4px 16px rgba(0,112,210,0.30) !important;
+  transition: transform var(--ease), box-shadow var(--ease) !important;
+}
+ul.special li:hover a::before {
+  background-image: linear-gradient(145deg, var(--navy), var(--blue)) !important;
+  transform: translateY(-5px) scale(1.07);
+  box-shadow: 0 10px 30px rgba(0,112,210,0.42) !important;
+}
+
+/* ─── FEATURE CARDS ──────────────────────────────────────── */
+.box.features {
+  background: var(--bg-card);
+  border-top: 4px solid var(--blue) !important;
+  border-radius: 0 0 var(--radius) var(--radius);
+  box-shadow: var(--shadow-sm);
+}
+
+section.box.feature {
+  background: var(--bg-card) !important;
+  border-radius: var(--radius) !important;
+  border-top: 3px solid var(--cyan) !important;
+  box-shadow: var(--shadow-sm) !important;
+  overflow: hidden;
+  transition: transform var(--ease), box-shadow var(--ease);
+  text-align: left;
+  margin-bottom: 0;
+}
+section.box.feature:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg) !important;
+}
+section.box.feature h3 {
+  font-size: 1em;
+  margin: 0.8em 0 0.35em;
+  padding: 0 1.1em;
+}
+section.box.feature h3 a { color: var(--navy) !important; text-decoration: none; }
+section.box.feature h3 a:hover { color: var(--blue) !important; }
+section.box.feature p {
+  padding: 0 1.1em 1.3em;
+  font-size: 0.88em;
+  line-height: 1.75;
+  color: var(--text);
+}
+
+/* ── IMAGES: fixed-height container + object-fit → no stretch ── */
+section.box.feature a.image.featured {
+  display: block;
+  overflow: hidden;
+  margin: 0;
+  height: 200px;
+  background: var(--navy-deep, #01183A);
+  flex-shrink: 0;
+}
+section.box.feature a.image.featured img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 20%;  /* show top portion of image */
+  display: block;
+  transition: transform .40s ease;
+}
+section.box.feature:hover a.image.featured img { transform: scale(1.04); }
+
+/* ─── BLOG ───────────────────────────────────────────────── */
+.box.blog {
+  background: var(--bg-card);
+  border-top: 4px solid var(--navy) !important;
+  border-radius: 0 0 var(--radius) var(--radius);
+  box-shadow: var(--shadow-sm);
+}
+article.box.post h3 a,
+article.box.post-summary h3 a { color: var(--navy) !important; text-decoration: none; }
+article.box.post h3 a:hover,
+article.box.post-summary h3 a:hover { color: var(--blue) !important; }
+.meta li { color: var(--text-muted); }
+ul.divided li { border-top-color: var(--border) !important; }
+
+article.box.post a.image.featured {
+  display: block;
+  overflow: hidden;
+  border-radius: 8px;
+  height: 320px;
+  background: #01183A;
+}
+article.box.post a.image.featured img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+/* ─── SIDEBAR ────────────────────────────────────────────── */
+.sidebar section {
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  padding: 1.6em 1.8em;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 2em;
+  border-top: 3px solid var(--cyan);
+}
+.sidebar h2.major span { background: var(--bg-card) !important; }
+.sidebar h2.major { text-align: left; }
+
+/* ─── PAGE CONTENT ───────────────────────────────────────── */
+article.box.page-content {
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  padding: 2.5em 3em;
+  border-top: 4px solid var(--cyan) !important;
+}
+article.box.page-content header h2 { color: var(--navy); }
+article.box.page-content header > p { color: var(--text-muted) !important; }
+
+article.box.page-content span.image.featured,
+article.box.page-content .image.featured {
+  display: block;
+  overflow: hidden;
+  border-radius: 8px;
+  height: 280px;
+  margin-bottom: 2em;
+  background: #01183A;
+}
+article.box.page-content span.image.featured img,
+article.box.page-content .image.featured img {
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
+}
+
+/* ─── COMING SOON ────────────────────────────────────────── */
+.cf-coming-soon {
+  text-align: center;
+  padding: 4em 2em 3.5em;
+  background: linear-gradient(160deg, #EDF4FB 0%, #E6F1FA 100%);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  margin-top: 1.5em;
+}
+.cf-coming-soon .cf-icon { font-size: 3.2em; color: var(--cyan); margin-bottom: 0.4em; display: block; }
+.cf-coming-soon h2 { color: var(--navy); font-size: 1.75em; margin-bottom: 0.3em; }
+.cf-coming-soon p { color: var(--text); max-width: 500px; margin: 0 auto 1.8em; line-height: 1.85; }
+.cf-tag-list {
+  display: flex; flex-wrap: wrap; gap: 0.5em;
+  justify-content: center; list-style: none; margin: 0 0 2em; padding: 0;
+}
+.cf-tag-list li {
+  background: #fff; color: var(--blue);
+  border: 1.5px solid #BDD6F0; border-radius: 20px;
+  padding: 0.28em 0.95em; font-size: 0.80em;
+  font-weight: 700; letter-spacing: 0.05em;
+}
+
+/* ─── FOOTER ─────────────────────────────────────────────── */
+#footer {
+  background-color: #01101F !important;
+  background-image: none !important;
+  color: #7AA4C4;
+  border-top: 3px solid var(--blue);
+}
+#footer h2.major { border-top-color: var(--blue) !important; }
+#footer h2.major span { background: #01101F !important; color: #fff !important; }
+#footer p, #footer a { color: #7AA4C4; }
+#footer a:hover { color: #fff; }
+#footer strong { color: #BDD8EE; }
+
+#copyright {
+  background-color: #000D1A !important;
+  border-top-color: #0a2040 !important;
+  color: #3D5E7A;
+}
+#copyright a { color: #3D5E7A; }
+#copyright a:hover { color: #fff; }
+
+ul.contact li a {
+  background-color: var(--blue) !important;
+  background-image: none !important;
+  color: #fff !important;
+  border-radius: 50%;
+  transition: background var(--ease), transform var(--ease) !important;
+}
+ul.contact li a:hover {
+  background-color: var(--orange) !important;
+  transform: scale(1.12) !important;
+}
+
+/* ─── RESPONSIVE ─────────────────────────────────────────── */
+@media (max-width: 980px) {
+  #header .logo h1 a::after { font-size: 1.7rem; letter-spacing: 0.08em; }
+  #header .logo h1 a::before { width: 52px; height: 42px; }
+  #header .logo p { font-size: 0.52em !important; }
+  #banner .content h2 { font-size: 1.9em !important; }
+  article.box.page-content { padding: 2em 1.8em; }
+  section.box.feature a.image.featured { height: 175px; }
+}
+@media (max-width: 736px) {
+  #header { padding: 2em 0 1.6em !important; }
+  #header .logo h1 a { flex-direction: column; gap: 0.3em; text-align: center; }
+  #header .logo h1 a::before { width: 54px; height: 44px; margin: 0 auto; }
+  #header .logo h1 a::after { font-size: 1.45rem; letter-spacing: 0.10em; text-align: center; }
+  #header .logo p { font-size: 0.48em !important; letter-spacing: 0.12em !important; text-align: center; }
+  #banner { min-height: 220px; }
+  #banner .content h2 { font-size: 1.55em !important; }
+  #banner .content p { font-size: 0.9em; }
+  section.box.feature a.image.featured { height: 155px; }
+  article.box.post a.image.featured { height: 210px; }
+  article.box.page-content { padding: 1.5em 1.2em; }
+  .sidebar section { padding: 1.2em 1.3em; }
+  .cf-coming-soon { padding: 2.5em 1.2em 2em; }
+  .cf-coming-soon h2 { font-size: 1.4em; }
+}
+@media (max-width: 480px) {
+  #header .logo h1 a::after { font-size: 1.2rem; }
+  #banner .content h2 { font-size: 1.3em !important; }
+  .button { padding: 0.6em 1.4em !important; font-size: 0.85em !important; }
+  .cf-tag-list li { font-size: 0.74em; }
+  section.box.feature a.image.featured { height: 135px; }
+}

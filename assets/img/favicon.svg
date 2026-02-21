@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <rect width="32" height="32" rx="7" fill="#032D60"/>
+  <!-- Salesforce-style cloud: 4 circles, matches brand reference exactly -->
+  <!-- Large body bottom-center -->
+  <circle cx="16"   cy="21.5" r="7.5"  fill="#00A1E0"/>
+  <!-- Left upper bump -->
+  <circle cx="10"   cy="17.5" r="5.2"  fill="#00A1E0"/>
+  <!-- Center top peak — tallest -->
+  <circle cx="16.5" cy="13.5" r="6"    fill="#00A1E0"/>
+  <!-- Right upper bump -->
+  <circle cx="22.5" cy="17"   r="4.8"  fill="#00A1E0"/>
+  <!-- Orange lightning bolt — the Force -->
+  <polygon points="18,7 13.5,17.5 17.5,17.5 15,25.5 22.5,16 18.5,16" fill="#FF6B00"/>
+</svg>

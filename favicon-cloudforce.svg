@@ -1,7 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title desc">
   <title id="title">Cloudforce Favicon</title>
-  <desc id="desc">High-contrast lightning bolt favicon for Cloudforce.</desc>
-  <rect width="64" height="64" rx="14" fill="#0B356F"/>
-  <polygon points="37,4 25,26 35,26 22,60 45,30 35,30" fill="#FFB300"/>
-  <path d="M16 14a20 20 0 0 1 10-4" stroke="#29C2FF" stroke-width="4" stroke-linecap="round" fill="none"/>
+  <desc id="desc">Stylized C and f letters separated by a prominent lightning bolt.</desc>
+  <rect width="64" height="64" fill="none"/>
+  <text x="1" y="54" fill="#F3F6FA" font-family="Georgia, 'Times New Roman', serif" font-size="56" font-weight="700">C</text>
+  <polygon points="36,3 26,24 35,24 22,60 47,30 38,30" fill="#FFA11A"/>
+  <text x="36" y="54" fill="#0EA5E9" font-family="Georgia, 'Times New Roman', serif" font-size="56" font-weight="700">f</text>
 </svg>
